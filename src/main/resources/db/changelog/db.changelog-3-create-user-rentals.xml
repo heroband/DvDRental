@@ -7,7 +7,7 @@
 
     <changeSet id="3" author="Denys">
         <createTable tableName="user_rentals">
-            <column name="id" type="bigint">
+            <column name="id" type="bigserial">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_id" type="bigint">
