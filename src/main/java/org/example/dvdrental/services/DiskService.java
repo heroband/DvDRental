@@ -1,5 +1,6 @@
 package org.example.dvdrental.services;
 
+import org.example.dvdrental.dto.DiskDto;
 import org.example.dvdrental.models.Disk;
 import org.example.dvdrental.repositories.DiskRepository;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,11 @@ public class DiskService {
         this.diskRepository = diskRepository;
     }
 
-    public Disk addDisk(Disk disk) {
+    public Disk addDisk(DiskDto diskDto) {
+        Disk disk = new Disk();
+        disk.setName(diskDto.getName());
+        disk.setPricePerDay(diskDto.getPricePerDay());
+        disk.setAvailable(true);
         return diskRepository.save(disk);
     }
 
