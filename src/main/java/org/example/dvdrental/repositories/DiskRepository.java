@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DiskRepository extends JpaRepository<Disk, Long> {
     List<Disk> findByAvailableTrue();
+    List<Disk> findByAvailableFalse();
 }

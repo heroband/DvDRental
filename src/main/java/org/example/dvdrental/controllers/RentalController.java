@@ -5,6 +5,7 @@ import org.example.dvdrental.dto.ApiResponse;
 import org.example.dvdrental.dto.RentDiskDto;
 import org.example.dvdrental.dto.ReturnDiskDto;
 import org.example.dvdrental.models.UserRental;
+import org.example.dvdrental.services.DiskService;
 import org.example.dvdrental.services.UserRentalService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -54,12 +55,9 @@ public class RentalController {
     @GetMapping("/return")
     public String showReturnForm(@RequestParam(required = false) Long diskId, Model model) {
         ReturnDiskDto returnDiskDto = new ReturnDiskDto();
-
-        if (diskId != null) {
-            returnDiskDto.setDiskId(diskId);
-        }
-
         model.addAttribute("returnDiskDto", returnDiskDto);
+        model.addAttribute("unavailableDisks", userRentalService.getAllUnavailableDisks());
+
         return "return-form";
     }
 
@@ -69,6 +67,7 @@ public class RentalController {
                              Model model) {
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("unavailableDisks", userRentalService.getAllUnavailableDisks());
             return "return-form";
         }
 
@@ -78,6 +77,7 @@ public class RentalController {
             model.addAttribute("rental", rental);
             return "rental-success";
         } catch (RuntimeException e) {
+            model.addAttribute("unavailableDisks", userRentalService.getAllUnavailableDisks());
             model.addAttribute("error", e.getMessage());
             return "return-form";
         }

@@ -90,4 +90,8 @@ public class UserRentalService {
         userRentalRepository.delete(rental);
         return rental;
     }
+
+    public List<Disk> getAllUnavailableDisks() {
+        return diskRepository.findByAvailableFalse();
+    }
 }

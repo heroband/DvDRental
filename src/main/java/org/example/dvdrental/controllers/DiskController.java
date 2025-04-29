@@ -23,7 +23,7 @@ public class DiskController {
 
     @GetMapping
     public String getAllDisks(Model model) {
-        List<Disk> disks = diskService.getAllDisks();
+        List<Disk> disks = diskService.getAllAvailableDisks();
         model.addAttribute("disks", disks);
 
         return "disks-list";

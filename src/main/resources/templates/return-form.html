@@ -5,7 +5,17 @@
 <h2>Return a Disk</h2>
 
 <form th:action="@{/rentals/return}" th:object="${returnDiskDto}" method="post">
-    <input type="hidden" th:field="*{diskId}" />
+
+    <div class="mb-3">
+        <label for="diskId">Select Disk</label>
+        <select class="form-select" id="diskId" th:field="*{diskId}">
+            <option th:each="disk : ${unavailableDisks}"
+                    th:value="${disk.id}"
+                    th:text="'ID: '+ ${disk.id + ' - ' + disk.name}">>
+            </option>
+        </select>
+        <div class="text-danger" th:if="${#fields.hasErrors('diskId')}" th:errors="*{diskId}"></div>
+    </div>
 
     <div class="mb-3">
         <label for="email">User Email</label>
