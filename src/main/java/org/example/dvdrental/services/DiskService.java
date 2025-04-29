@@ -28,6 +28,10 @@ public class DiskService {
         return diskRepository.findAll();
     }
 
+    public List<Disk>getAllAvailableDisks() {
+        return diskRepository.findByAvailableTrue();
+    }
+
     public Disk getDiskById(Long id) {
         return diskRepository.findById(id).orElse(null);
     }
