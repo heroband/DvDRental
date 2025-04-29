@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="fragments/head :: head" th:with="title='Add disk'"></th:block>
+<body class="container mt-5">
+<h2 class="mb-4">Add new disk</h2>
+
+<form th:action="@{/disks}" th:object="${diskDto}" method="post">
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Enter name">
+        <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    </div>
+
+    <div class="mb-3">
+        <label for="pricePerDay" class="form-label">Rent price per day</label>
+        <input type="number" step="0.01" class="form-control" id="pricePerDay" th:field="*{pricePerDay}" placeholder="0.00">
+        <div class="text-danger" th:if="${#fields.hasErrors('pricePerDay')}" th:errors="*{pricePerDay}"></div>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a th:href="@{/disks}" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+</body>
+</html>

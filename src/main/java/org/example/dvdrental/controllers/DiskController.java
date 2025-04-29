@@ -1,16 +1,17 @@
 package org.example.dvdrental.controllers;
 
 import jakarta.validation.Valid;
-import org.example.dvdrental.dto.ApiResponse;
 import org.example.dvdrental.dto.DiskDto;
 import org.example.dvdrental.models.Disk;
 import org.example.dvdrental.services.DiskService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/disks")
 public class DiskController {
 
@@ -21,27 +22,39 @@ public class DiskController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Disk>>> getAllDisks() {
+    public String getAllDisks(Model model) {
         List<Disk> disks = diskService.getAllDisks();
-        return ResponseEntity.ok(new ApiResponse<>("Disk list fetched", disks));
+        model.addAttribute("disks", disks);
+
+        return "disks-list";
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Disk>> getDiskById(@PathVariable Long id) {
+    public String getDiskById(@PathVariable Long id, Model model) {
         Disk disk = diskService.getDiskById(id);
 
         if (disk != null) {
-            return ResponseEntity.ok(new ApiResponse<>("Disk fetched", disk));
+            model.addAttribute("disk", disk);
+            return "disk-detail";
         } else {
-            return ResponseEntity
-                    .status(404)
-                    .body(new ApiResponse<>("Disk not found", null));
+            return "disk-not-found";
         }
     }
 
+    @GetMapping("/add")
+    public String showAddForm(Model model) {
+        model.addAttribute("diskDto", new DiskDto());
+        return "disk-form";
+    }
+
     @PostMapping
-    public ResponseEntity<ApiResponse<Disk>> addDisk(@RequestBody @Valid DiskDto diskDto) {
-        Disk savedDisk = diskService.addDisk(diskDto);
-        return ResponseEntity.ok(new ApiResponse<>("Disk added successfully", savedDisk));
+    public String addDisk(@ModelAttribute("diskDto") @Valid DiskDto diskDto, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "disk-form";
+        }
+
+        diskService.addDisk(diskDto);
+        return "redirect:/disks";
     }
 }

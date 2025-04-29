@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="fragments/head :: head" th:with="title='Disks list'"></th:block>
+<body class="container mt-4">
+<h1>Disks</h1>
+<ul class="list-group mb-4">
+    <li class="list-group-item" th:each="disk : ${disks}" th:text="${disk.name}">Disk Title</li>
+</ul>
+<a href="/disks/add" class="btn btn-primary">Add</a>
+</body>
+</html>
