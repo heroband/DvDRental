@@ -71,11 +71,17 @@ public class UserRentalService {
     }
 
     @Transactional
-    public UserRental returnDisk(Long diskId){
-        UserRental rental = userRentalRepository.findAll().stream()
-                .filter(r -> r.getDisk().getId().equals(diskId))
+    public UserRental returnDisk(Long diskId, String email){
+        User user = userRepository.findAll().stream()
+                .filter(u -> u.getEmail().equalsIgnoreCase(email))
                 .findFirst()
-                .orElseThrow(()->new RuntimeException("Rental not found for this disk"));
+                .orElseThrow(() ->  new RuntimeException("User not found"));
+
+        UserRental rental = userRentalRepository.findAll().stream()
+                .filter(r -> r.getDisk().getId().equals(diskId) &&
+                        r.getUser().getId().equals(user.getId()))
+                .findFirst()
+                .orElseThrow(()->new RuntimeException("The user has not rented a disk with this Id"));
 
         Disk disk = rental.getDisk();
         disk.setAvailable(true);

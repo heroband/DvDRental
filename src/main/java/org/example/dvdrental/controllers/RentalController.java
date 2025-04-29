@@ -1,7 +1,9 @@
 package org.example.dvdrental.controllers;
 
 import jakarta.validation.Valid;
+import org.example.dvdrental.dto.ApiResponse;
 import org.example.dvdrental.dto.RentDiskDto;
+import org.example.dvdrental.dto.ReturnDiskDto;
 import org.example.dvdrental.models.UserRental;
 import org.example.dvdrental.services.UserRentalService;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +19,22 @@ public class RentalController {
     }
 
     @PostMapping("/rent")
-    public ResponseEntity<UserRental> rentDisk(@RequestBody @Valid RentDiskDto rentDiskDto) {
-        var rental = userRentalService.rentDisk(rentDiskDto);
-        return ResponseEntity.ok(rental);
+    public ResponseEntity<ApiResponse<UserRental>> rentDisk(@RequestBody @Valid RentDiskDto rentDiskDto) {
+        try {
+            var rental = userRentalService.rentDisk(rentDiskDto);
+            return ResponseEntity.ok(new ApiResponse<>("Disk rented successfully", rental));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new ApiResponse<>(e.getMessage(), null));
+        }
     }
 
-    @PostMapping("/return/{diskId}")
-    public ResponseEntity<String> returnDisk(@PathVariable Long diskId) {
+    @PostMapping("/return")
+    public ResponseEntity<ApiResponse<UserRental>> returnDisk(@RequestBody @Valid ReturnDiskDto returnDiskDto) {
         try {
-            userRentalService.returnDisk(diskId);
-            return ResponseEntity.ok("Disk returned successfully");
+            var rental = userRentalService.returnDisk(returnDiskDto.getDiskId(), returnDiskDto.getEmail());
+            return ResponseEntity.ok(new ApiResponse<>("Disk returned successfully", rental));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new ApiResponse<>(e.getMessage(), null));
         }
     }
 }
