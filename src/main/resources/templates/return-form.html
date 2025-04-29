@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="fragments/head :: head" th:with="title='Return Disk'"></th:block>
+<body class="container mt-5">
+<h2>Return a Disk</h2>
+
+<form th:action="@{/rentals/return}" th:object="${returnDiskDto}" method="post">
+    <input type="hidden" th:field="*{diskId}" />
+
+    <div class="mb-3">
+        <label for="email">User Email</label>
+        <input type="email" class="form-control" id="email" th:field="*{email}">
+        <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+    </div>
+
+    <div class="text-danger" th:if="${error}" th:text="${error}"></div>
+
+    <button type="submit" class="btn btn-success">Return</button>
+</form>
+</body>
+</html>

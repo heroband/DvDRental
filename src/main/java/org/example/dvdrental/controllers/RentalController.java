@@ -7,9 +7,12 @@ import org.example.dvdrental.dto.ReturnDiskDto;
 import org.example.dvdrental.models.UserRental;
 import org.example.dvdrental.services.UserRentalService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/rentals")
 public class RentalController {
     private final UserRentalService userRentalService;
@@ -18,23 +21,65 @@ public class RentalController {
         this.userRentalService = userRentalService;
     }
 
+    @GetMapping("/rent")
+    public String showRentForm(@RequestParam(required = false) Long diskId, Model model) {
+        RentDiskDto rentDiskDto = new RentDiskDto();
+        if (diskId != null) {
+            rentDiskDto.setDiskId(diskId);
+        }
+        model.addAttribute("rentDiskDto", rentDiskDto);
+        return "rent-form";
+    }
+
     @PostMapping("/rent")
-    public ResponseEntity<ApiResponse<UserRental>> rentDisk(@RequestBody @Valid RentDiskDto rentDiskDto) {
+    public String rentDisk(@ModelAttribute("rentDiskDto") @Valid RentDiskDto rentDiskDto,
+                           BindingResult bindingResult,
+                           Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "rent-form";
+        }
+
         try {
             var rental = userRentalService.rentDisk(rentDiskDto);
-            return ResponseEntity.ok(new ApiResponse<>("Disk rented successfully", rental));
+            model.addAttribute("message", "Disk rented successfully");
+            model.addAttribute("rental", rental);
+            return "rental-success";
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(new ApiResponse<>(e.getMessage(), null));
+            model.addAttribute("error", e.getMessage());
+            return "rent-form";
         }
     }
 
+    @GetMapping("/return")
+    public String showReturnForm(@RequestParam(required = false) Long diskId, Model model) {
+        ReturnDiskDto returnDiskDto = new ReturnDiskDto();
+
+        if (diskId != null) {
+            returnDiskDto.setDiskId(diskId);
+        }
+
+        model.addAttribute("returnDiskDto", returnDiskDto);
+        return "return-form";
+    }
+
     @PostMapping("/return")
-    public ResponseEntity<ApiResponse<UserRental>> returnDisk(@RequestBody @Valid ReturnDiskDto returnDiskDto) {
+    public String returnDisk(@ModelAttribute("returnDiskDto") @Valid ReturnDiskDto returnDiskDto,
+                             BindingResult bindingResult,
+                             Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "return-form";
+        }
+
         try {
             var rental = userRentalService.returnDisk(returnDiskDto.getDiskId(), returnDiskDto.getEmail());
-            return ResponseEntity.ok(new ApiResponse<>("Disk returned successfully", rental));
+            model.addAttribute("message", "Disk returned successfully");
+            model.addAttribute("rental", rental);
+            return "rental-success";
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(new ApiResponse<>(e.getMessage(), null));
+            model.addAttribute("error", e.getMessage());
+            return "return-form";
         }
     }
 }

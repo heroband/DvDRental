@@ -3,9 +3,18 @@
 <th:block th:replace="fragments/head :: head" th:with="title='Disks list'"></th:block>
 <body class="container mt-4">
 <h1>Disks</h1>
+
 <ul class="list-group mb-4">
-    <li class="list-group-item" th:each="disk : ${disks}" th:text="${disk.name}">Disk Title</li>
+    <li class="list-group-item d-flex justify-content-between align-items-center"
+        th:each="disk : ${disks}">
+        <span th:text="${disk.name}">Disk Title</span>
+        <div class="btn-group ms-auto">
+            <a th:href="@{/rentals/rent(diskId=${disk.id})}" class="btn btn-sm btn-outline-primary">Rent</a>
+            <a th:href="@{/rentals/return(diskId=${disk.id})}" class="btn btn-sm btn-outline-primary">Return</a>
+        </div>
+    </li>
 </ul>
+
 <a href="/disks/add" class="btn btn-primary">Add</a>
 </body>
 </html>

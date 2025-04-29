@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="fragments/head :: head" th:with="title='Rental Success'"></th:block>
+<body class="container mt-5">
+<h2 th:text="${message}"></h2>
+
+<div class="mt-3">
+    <p><strong>Disk ID:</strong> <span th:text="${rental.disk.id}"></span></p>
+    <p><strong>User:</strong> <span th:text="${rental.user.email}"></span></p>
+    <p><strong>Rental date:</strong> <span th:text="${rental.startDate}"></span>-<span th:text="${rental.endDate}"></span></p>
+    <p><strong>Price:</strong> <span th:text="${rental.totalPrice}"></span></p>
+</div>
+
+<a th:href="@{/disks}" class="btn btn-primary mt-3">Back to Disks</a>
+</body>
+</html>
