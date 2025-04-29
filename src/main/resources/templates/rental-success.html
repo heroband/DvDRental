@@ -7,7 +7,7 @@
 <div class="mt-3">
     <p><strong>Disk ID:</strong> <span th:text="${rental.disk.id}"></span></p>
     <p><strong>User:</strong> <span th:text="${rental.user.email}"></span></p>
-    <p><strong>Rental date:</strong> <span th:text="${rental.startDate}"></span>-<span th:text="${rental.endDate}"></span></p>
+    <p><strong>Rental date:</strong> <span th:text="${rental.startDate + ' - ' + rental.endDate}"/></p>
     <p><strong>Price:</strong> <span th:text="${rental.totalPrice}"></span></p>
 </div>
 

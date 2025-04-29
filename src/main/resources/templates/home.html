@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="fragments/head :: head" th:with="title='Home'"></th:block>
+<body class="container mt-5">
+<h2>Welcome to DVD Rental System</h2>
+<p>Select your role:</p>
+
+<div class="d-flex gap-3">
+    <a href="/disks" class="btn btn-primary">User</a>
+    <a href="/admin" class="btn btn-secondary">Admin</a>
+</div>
+</body>
+</html>

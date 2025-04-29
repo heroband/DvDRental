@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="fragments/head :: head" th:with="title='All Rentals'"></th:block>
+<body class="container mt-4">
+<h2>All Rentals</h2>
+
+<table class="table table-bordered table-striped mt-4">
+    <thead>
+    <tr>
+        <th>Disk Id</th>
+        <th>Disk Name</th>
+        <th>User Email</th>
+        <th>Rent Date</th>
+        <th>Total Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="rental : ${rentals}">
+        <td th:text="${rental.disk.id}">Disk Id</td>
+        <td th:text="${rental.disk.name}">Disk Name</td>
+        <td th:text="${rental.user.email}">User Email</td>
+        <td th:text="${rental.startDate + ' - ' + rental.endDate}">Rent Date</td>
+        <td th:text="${rental.totalPrice}">Total Price</td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/" class="btn btn-secondary mt-3">Back to Home</a>
+</body>
+</html>
