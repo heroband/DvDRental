@@ -29,18 +29,6 @@ public class DiskController {
         return "disks-list";
     }
 
-    @GetMapping("/{id}")
-    public String getDiskById(@PathVariable Long id, Model model) {
-        Disk disk = diskService.getDiskById(id);
-
-        if (disk != null) {
-            model.addAttribute("disk", disk);
-            return "disk-detail";
-        } else {
-            return "disk-not-found";
-        }
-    }
-
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("diskDto", new DiskDto());
