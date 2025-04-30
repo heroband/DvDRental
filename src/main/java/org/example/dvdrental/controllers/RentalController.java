@@ -1,13 +1,9 @@
 package org.example.dvdrental.controllers;
 
 import jakarta.validation.Valid;
-import org.example.dvdrental.dto.ApiResponse;
 import org.example.dvdrental.dto.RentDiskDto;
 import org.example.dvdrental.dto.ReturnDiskDto;
-import org.example.dvdrental.models.UserRental;
-import org.example.dvdrental.services.DiskService;
 import org.example.dvdrental.services.UserRentalService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

@@ -66,10 +66,6 @@ public class UserRentalService {
         return userRentalRepository.findAll();
     }
 
-    public UserRental getRentalById(Long id) {
-        return userRentalRepository.findById(id).orElse(null);
-    }
-
     @Transactional
     public UserRental returnDisk(Long diskId, String email){
         User user = userRepository.findAll().stream()
